@@ -1,3 +1,5 @@
+using AC_backend.Entities;
+using AC_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -7,19 +9,26 @@ namespace AC_backend.Controllers;
 [Route("[controller]")]
 public class CustomerController : Controller
 {
+    private ICustomerService _customerService;
+    
+    public CustomerController(ICustomerService customerService)
+    {
+        _customerService = customerService;
+    }
+    
     private Customer data = new()
     {
-        customerID = 1,
-        firstName = "Johny",
-        lastName = "Deeep",
-        businessName= "business 1",
-        phone = "0123456789",
-        emailName="email@email.com",
-        ico="12345646",
-        dic="RR123465",
-        street="11 Under Bridge",
-        town = "ToyTown",
-        psc= "GG4456"
+        CustomerID = 1,
+        FirstName = "Johny",
+        LastName = "Deeep",
+        BusinessName= "business 1",
+        Phone = "0123456789",
+        EmailName="email@email.com",
+        Ico="12345646",
+        Dic="RR123465",
+        Street="11 Under Bridge",
+        Town = "ToyTown",
+        Psc= "GG4456"
     };
 
     [HttpGet]
@@ -34,6 +43,14 @@ public class CustomerController : Controller
     {
         var jsonFormat = JsonConvert.SerializeObject(data);
         return Ok(jsonFormat);
+    }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetCustomerById(int id)
+    {
+        //var jsonFormat = JsonConvert.SerializeObject(data);
+        var result = _customerService.GetCustomerById(id);
+        return Ok(result);
     }
 
     /*[HttpPost]
